@@ -141,10 +141,17 @@ router.post('/', async (req, res) => {
       ip
     });
 
-    // responde IMEDIATAMENTE pro navegador nao ficar travado
+    // responde IMEDIATAMENTE e sem o base64 (evita resposta enorme)
     res.status(201).json({
-      ...atividade.toObject(),
-      certificado: { nomeArquivo: dadosAtividade.certificado?.nomeArquivo || null }
+      _id: atividade._id,
+      titulo: atividade.titulo,
+      status: atividade.status,
+      cargaHoraria: atividade.cargaHoraria,
+      idAluno: atividade.idAluno,
+      idCurso: atividade.idCurso,
+      idCategoria: atividade.idCategoria,
+      certificado: { nomeArquivo: dadosAtividade.certificado?.nomeArquivo || null },
+      createdAt: atividade.createdAt
     });
 
     // dispara o email EM SEGUNDO PLANO (sem await, nao bloqueia a resposta)
